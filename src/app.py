@@ -75,13 +75,24 @@ def render_sidebar():
             st.success("百炼 API ✅ 已配置")
         else:
             st.error("百炼 API ❌ 未配置")
-            with st.expander("📝 如何配置？"):
-                st.markdown("""
-                1. 访问 [阿里云百炼](https://bailian.console.aliyun.com/)
-                2. 创建 API Key
-                3. 本地开发：填入 `.streamlit/secrets.toml`
-                4. 云端部署：在 Streamlit Cloud 的 Secrets 中配置
-                """)
+            with st.expander("🔑 点此输入 API Key（无需配置 Secrets）"):
+                api_key_input = st.text_input(
+                    "百炼 API Key",
+                    type="password",
+                    placeholder="sk-ws-...",
+                    help="从阿里云百炼控制台获取",
+                )
+                base_url_input = st.text_input(
+                    "API Base URL（可选）",
+                    value="https://dashscope.aliyuncs.com/compatible-mode/v1",
+                    help="默认使用 DashScope，百炼用户填入自定义地址",
+                )
+                if api_key_input:
+                    os.environ["DASHSCOPE_API_KEY"] = api_key_input
+                    if base_url_input:
+                        os.environ["DASHSCOPE_BASE_URL"] = base_url_input
+                    st.success("Key 已设置 ✅ 请点击下方「加载知识库」")
+                    st.rerun()
 
         # 知识库状态
         st.subheader("📚 知识库")
