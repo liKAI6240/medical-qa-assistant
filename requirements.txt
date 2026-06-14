@@ -4,19 +4,15 @@ langchain>=0.3.0
 langchain-community>=0.3.0
 chromadb>=0.5.0
 
-# ========== LLM + Embedding API (百炼 DashScope OpenAI 兼容) ==========
+# ========== LLM API (百炼 DashScope OpenAI 兼容) ==========
 openai>=1.0.0
 
 # ========== 混合检索 ==========
 rank-bm25>=0.3.0
 
+# ========== 轻量 Embedding（无需 PyTorch，ONNX 运行时 ~100MB）==========
+fastembed>=0.4.0
+
 # ========== 数据处理 ==========
 pandas>=2.0.0
 numpy>=1.24.0
-
-# ========== 工具 ==========
-python-dotenv>=1.0.0
-tqdm>=4.65.0
-
-# ========== 本地 Embedding 模型 ==========
-sentence-transformers>=3.0.0

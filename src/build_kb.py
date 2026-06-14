@@ -19,16 +19,15 @@ from config import (
 
 
 def get_local_embeddings():
-    """获取本地 Embedding 实例（首次自动下载模型，默认 bge-small-zh-v1.5 ~100MB）"""
+    """获取本地 Embedding 实例（基于 ONNX 运行时，无需 PyTorch，~100MB）"""
     try:
-        from langchain_community.embeddings import HuggingFaceEmbeddings
-        return HuggingFaceEmbeddings(
+        from langchain_community.embeddings import FastEmbedEmbeddings
+        return FastEmbedEmbeddings(
             model_name=LOCAL_EMBEDDING_MODEL,
-            model_kwargs={"device": "cpu"},
-            encode_kwargs={"normalize_embeddings": True},
+            max_length=512,
         )
     except ImportError:
-        raise ImportError("请安装 sentence-transformers: pip install sentence-transformers")
+        raise ImportError("请安装 fastembed: pip install fastembed")
 
 
 def get_dashscope_embeddings():
