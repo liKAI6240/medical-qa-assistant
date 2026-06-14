@@ -11,20 +11,43 @@ from tqdm import tqdm
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
 
-from config import CHUNK_SIZE, CHUNK_OVERLAP, VECTOR_DB_PATH
+from config import (
+    CHUNK_SIZE, CHUNK_OVERLAP, VECTOR_DB_PATH,
+    EMBEDDING_BACKEND, EMBEDDING_MODEL, EMBEDDING_DIMS,
+    LOCAL_EMBEDDING_MODEL,
+)
 
 
 def get_local_embeddings():
-    """获取本地 text2vec-large-chinese Embedding 实例（首次自动下载约1.3GB）"""
+    """获取本地 Embedding 实例（首次自动下载模型，默认 bge-small-zh-v1.5 ~100MB）"""
     try:
         from langchain_community.embeddings import HuggingFaceEmbeddings
         return HuggingFaceEmbeddings(
-            model_name="GanymedeNil/text2vec-large-chinese",
+            model_name=LOCAL_EMBEDDING_MODEL,
             model_kwargs={"device": "cpu"},
             encode_kwargs={"normalize_embeddings": True},
         )
     except ImportError:
         raise ImportError("请安装 sentence-transformers: pip install sentence-transformers")
+
+
+def get_dashscope_embeddings():
+    """获取 DashScope/百炼 Embedding API 实例（无需下载模型）"""
+    from embeddings import DashScopeEmbeddings
+    return DashScopeEmbeddings(
+        model=EMBEDDING_MODEL,
+        dimensions=EMBEDDING_DIMS,
+    )
+
+
+def get_embeddings():
+    """根据配置返回对应的 Embedding 实例"""
+    if EMBEDDING_BACKEND == "dashscope":
+        print("使用 DashScope Embedding API（无需本地模型）")
+        return get_dashscope_embeddings()
+    else:
+        print("使用本地 text2vec-large-chinese 模型")
+        return get_local_embeddings()
 
 
 def create_text_splitter(
@@ -47,7 +70,7 @@ def build_knowledge_base(
     chunk_overlap: int = CHUNK_OVERLAP,
 ) -> Chroma:
     """构建向量知识库"""
-    print("开始构建知识库 (本地 text2vec 模型)...")
+    print(f"开始构建知识库 (embedding 后端: {EMBEDDING_BACKEND})...")
 
     # 1. 文本分块
     text_splitter = create_text_splitter(chunk_size, chunk_overlap)
@@ -62,7 +85,7 @@ def build_knowledge_base(
 
     # 2. 初始化 Embedding
     print("2. 初始化 Embedding 模型...")
-    embeddings = get_local_embeddings()
+    embeddings = get_embeddings()
 
     # 3. 向量化并存入 ChromaDB
     print("3. 向量化并存入 ChromaDB...")
@@ -93,7 +116,7 @@ def load_knowledge_base(
         print(f"⚠ 知识库路径不存在: {VECTOR_DB_PATH}")
         return None
 
-    embeddings = get_local_embeddings()
+    embeddings = get_embeddings()
     try:
         vectorstore = Chroma(
             persist_directory=VECTOR_DB_PATH,

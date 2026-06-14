@@ -6,19 +6,17 @@
 import time
 from typing import Iterator
 from openai import OpenAI
-from config import DASHSCOPE_API_KEY, LLM_MODEL
+from config import DASHSCOPE_API_KEY, DASHSCOPE_BASE_URL, LLM_MODEL
 
 
 # ==================== DashScope 客户端 ====================
-
-BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1"
 
 
 def _get_client() -> OpenAI:
     """获取 DashScope OpenAI 兼容客户端"""
     return OpenAI(
         api_key=DASHSCOPE_API_KEY,
-        base_url=BASE_URL,
+        base_url=DASHSCOPE_BASE_URL,
         timeout=30.0,
         max_retries=2,
     )

@@ -1,6 +1,3 @@
-# 知识库（太大，需本地重建）
-knowledge_base/
-
 # 配置文件（含API Key）
 config.py
 

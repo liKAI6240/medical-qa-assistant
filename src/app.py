@@ -72,14 +72,15 @@ def render_sidebar():
         # API 配置检查
         st.subheader("⚙️ 系统配置")
         if check_config():
-            st.success("通义千问 API ✅ 已配置")
+            st.success("百炼 API ✅ 已配置")
         else:
-            st.error("通义千问 API ❌ 未配置")
+            st.error("百炼 API ❌ 未配置")
             with st.expander("📝 如何配置？"):
                 st.markdown("""
-                1. 访问 [阿里云 DashScope](https://dashscope.console.aliyun.com/apiKey)
-                2. 注册/登录后创建 API Key
-                3. 填入 `config.py` 文件中的 `DASHSCOPE_API_KEY`
+                1. 访问 [阿里云百炼](https://bailian.console.aliyun.com/)
+                2. 创建 API Key
+                3. 本地开发：填入 `.streamlit/secrets.toml`
+                4. 云端部署：在 Streamlit Cloud 的 Secrets 中配置
                 """)
 
         # 知识库状态
