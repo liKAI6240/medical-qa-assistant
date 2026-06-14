@@ -1,0 +1,29 @@
+# 知识库（太大，需本地重建）
+knowledge_base/
+
+# 配置文件（含API Key）
+config.py
+
+# 原始数据
+data/raw/
+data/processed/cleaned_qa.csv
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# 环境变量
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# Streamlit
+.streamlit/
+
+# OS
+Thumbs.db
+.DS_Store
