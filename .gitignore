@@ -1,5 +1,5 @@
-# 配置文件（含API Key）
-config.py
+# 配置文件（含API Key）- 仅忽略根目录 config.py
+/config.py
 
 # 原始数据
 data/raw/

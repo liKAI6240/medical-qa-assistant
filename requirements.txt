@@ -1,9 +1,12 @@
 streamlit
 langchain
+langchain-text-splitters
 langchain-community
+langchain-core
 chromadb
 openai
 rank-bm25
 fastembed
+tqdm
 pandas
 numpy
