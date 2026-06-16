@@ -103,7 +103,7 @@ def build_knowledge_base(
         if i + batch_size < len(split_docs):
             time.sleep(0.3)
 
-    print(f"✅ 知识库构建完成！共 {len(split_docs)} 个向量块")
+    print(f"[OK] Knowledge base built! {len(split_docs)} vectors")
     return vectorstore
 
 
@@ -112,7 +112,7 @@ def load_knowledge_base(
 ) -> Optional[Chroma]:
     """加载已持久化的知识库"""
     if not os.path.exists(VECTOR_DB_PATH):
-        print(f"⚠ 知识库路径不存在: {VECTOR_DB_PATH}")
+        print(f"[WARN] KB path not found: {VECTOR_DB_PATH}")
         return None
 
     embeddings = get_embeddings()
@@ -122,8 +122,8 @@ def load_knowledge_base(
             embedding_function=embeddings,
             collection_name=collection_name,
         )
-        print(f"✅ 已加载知识库: {vectorstore._collection.count()} 个向量")
+        print(f"[OK] Knowledge base loaded: {vectorstore._collection.count()} vectors")
         return vectorstore
     except Exception as e:
-        print(f"⚠ 加载失败: {e}")
+        print(f"[WARN] Load failed: {e}")
         return None

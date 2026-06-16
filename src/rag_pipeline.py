@@ -25,12 +25,12 @@ class MedicalRAGPipeline:
         self.vectorstore = load_knowledge_base()
 
         if self.vectorstore is None:
-            print("⚠ 知识库未找到，请先运行 build_kb.py 构建知识库")
+            print("[WARN] Knowledge base not found. Run build_kb.py first.")
             return False
 
         self.retriever = MedicalRetriever(self.vectorstore)
         self._initialized = True
-        print("✅ RAG Pipeline 初始化完成")
+        print("[OK] RAG Pipeline initialized")
         return True
 
     def ask(self, question: str) -> dict:
